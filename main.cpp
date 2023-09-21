@@ -135,6 +135,7 @@ public:
             getline(config_file, line);
             state_list_head->next_state_list = (State*)(malloc(sizeof(State)));
             curr_node = state_list_head->next_state_list;
+            curr_node->prev_state_list = state_list_head;
             curr_node->is_initial = false;
             curr_node->is_accept = true;
             curr_node->is_reject = false;
@@ -142,6 +143,7 @@ public:
 
             getline(config_file, line);
             curr_node->next_state_list = (State*)(malloc(sizeof(State)));
+            curr_node->next_state_list->prev_state_list = curr_node;
             curr_node = curr_node->next_state_list;
             curr_node->is_initial = false;
             curr_node->is_accept = true;
@@ -181,8 +183,56 @@ public:
                 }
                 curr_node = curr_node->next_state_list;
             }
+
+            if (curr_node->get_name() == transition_information[0]) {
+                new_state_needed = false;
+                curr_transition_node = curr_node->transition_list_head;
+                while (curr_transition_node->next != nullptr) {
+                    curr_transition_node = curr_transition_node->next;
+                }
+                curr_transition_node->next = (TransitionNode*) (malloc(sizeof (TransitionNode)));
+                curr_transition_node = curr_transition_node->next;
+                curr_transition_node->symbol_read = transition_information[1];
+                curr_transition_node->next_state_name = transition_information[2];
+                curr_transition_node->symbol_write = transition_information[3];
+                curr_transition_node->left_right = transition_information[4];
+            }
+            else {
+                // Frikinnnnnnnnn UHHHHHH malloc a new one
+                curr_node->next_state_list = (State*) (malloc(sizeof (State)));
+                curr_node->next_state_list->prev_state_list = curr_node;
+                curr_node = curr_node->next_state_list;
+                curr_node->set_name(transition_information[0]);
+                curr_node->transition_list_head = (TransitionNode*) (malloc(sizeof (TransitionNode)));
+                curr_transition_node = curr_node->transition_list_head;
+                curr_transition_node->symbol_read = transition_information[1];
+                curr_transition_node->next_state_name = transition_information[2];
+                curr_transition_node->symbol_write = transition_information[3];
+                curr_transition_node->left_right = transition_information[4];
+            }
         }
-        return -1;
+
+        // Make a pass over all the states and transitions to update the transition nodes with the states instead of state names
+        curr_node = state_list_head;
+        std::string state_name;
+        TransitionNode* curr_transition_node;
+        State* curr_state_node_internal;
+        while(curr_node != nullptr) {
+            curr_transition_node = curr_node->transition_list_head;
+            while (curr_transition_node != nullptr) {
+                state_name = curr_transition_node->next_state_name;
+                curr_state_node_internal = state_list_head;
+                while(curr_state_node_internal != nullptr) {
+                    if (curr_state_node_internal->get_name() == state_name) {
+                        curr_transition_node->next_state = curr_state_node_internal;
+                    }
+                    curr_state_node_internal = curr_state_node_internal->next_state_list;
+                }
+                curr_transition_node = curr_transition_node->next;
+            }
+            curr_node = curr_node->next_state_list;
+        }
+        return 0;
     }
 
     int load_configuration(char* filename) {
