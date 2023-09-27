@@ -359,12 +359,19 @@ public:
         return 0;
     }
 
-    bool run_simulation(int max_steps) {
+    bool run_simulation(int max_steps, bool step) {
         string read_symbol;
         string write_symbol;
         State* next_state;
         string left_right;
         TransitionNode* transition_search_node;
+
+        if (step) {
+            do
+            {
+                cout << '\n' << "Press a key to continue...";
+            } while (cin.get() != '\n');
+        }
 
         for (int iter = 0; iter < max_steps; iter++) {
             read_symbol = tape->read_head();
@@ -404,6 +411,12 @@ public:
                 }
             }
             print_tape();
+            if (step) {
+                do
+                {
+                    cout << '\n' << "Press a key to continue...";
+                } while (cin.get() != '\n');
+            }
         }
 
         return false;
@@ -411,6 +424,7 @@ public:
 
     void print_tape() {
         tape->print_tape();
+        cout << "State: " + current_state->get_name() << endl;
     }
 
 };
@@ -430,21 +444,32 @@ int main(int argc, char* argv[]) {
      *
      * Also, the absolute path is required in the command line arguments.
      * The first argument is the state_machine file and the second is the current configuration file.
+     * The third is S (step through) or C (continuous run) and the fourth is the max steps, to halt so the TM
+     * doesn't run indefinitely.
      */
 
 
-    if (argc != 3) {
+    if (argc != 5) {
         cout << "Incorrect number of arguments, please enter a filename" << endl;
     }
     string state_machine_file = argv[1];
     string config_file = argv[2];
+
+    string step_through = argv[3];
+    bool step = false;
+
+    if (step_through == "S") {
+        step = true;
+    }
+
+    int max_steps = (int) strtol(argv[4], nullptr, 10);
 
     auto* TM = new TuringMachine();
 
     TM->load_machine_from_file(state_machine_file);
     TM->load_configuration(config_file);
 
-    bool accept_reject = TM->run_simulation(100);
+    bool accept_reject = TM->run_simulation(max_steps, step);
 
     if (accept_reject) {
         cout << "String Accepted." << endl;
