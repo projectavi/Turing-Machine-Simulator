@@ -416,6 +416,23 @@ public:
 };
 
 int main(int argc, char* argv[]) {
+    /*
+     * The format for the configuration files are as follows.
+     * For the state machine file, on the first three lines name the initial, accept, and reject states
+     * After that, every line describes a transition separated by commas in the format:
+     * <state>, <symbol on tape>, <new state>, <symbol to write>, <L or R for moving tape head>
+     *
+     * If the TM reads an input for an undefined transition, it assumes that this is a reject transition,
+     * and will then reject the input.
+     *
+     * For the configuration file, the format is x<state>y, the standard configuration format for TMs
+     * Each should be on its own line. To represent a blank use '_' and for an empty string use '~' (do not use this in your language).
+     *
+     * Also, the absolute path is required in the command line arguments.
+     * The first argument is the state_machine file and the second is the current configuration file.
+     */
+
+
     if (argc != 3) {
         cout << "Incorrect number of arguments, please enter a filename" << endl;
     }
