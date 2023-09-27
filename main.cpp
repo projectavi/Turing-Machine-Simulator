@@ -84,6 +84,14 @@ public:
             curr_cell = curr_cell->right_cell;
         }
 
+        if (curr_cell == tape_head) {
+            cout << "   ↓   ";
+        }
+        else {
+            cout << "       ";
+        }
+        curr_cell = curr_cell->right_cell;
+
         cout << endl;
 
         curr_cell = start_cell;
@@ -92,6 +100,9 @@ public:
             curr_cell->print_cell();
             curr_cell = curr_cell->right_cell;
         }
+
+        curr_cell->print_cell();
+
         cout << endl;
     }
 };
