@@ -1,0 +1,4 @@
+/Users/avinewatia/Applications/CLion.app/Contents/bin/cmake/mac/bin/cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_MAKE_PROGRAM=/Users/avinewatia/Applications/CLion.app/Contents/bin/ninja/mac/ninja -G Ninja -S "/Users/avinewatia/Documents/Turing Machine Simulation" -B "/Users/avinewatia/Documents/Turing Machine Simulation/cmake-build-debug"
+-- Configuring done (0.0s)
+-- Generating done (0.0s)
+-- Build files have been written to: /Users/avinewatia/Documents/Turing Machine Simulation/cmake-build-debug

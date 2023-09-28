@@ -1,0 +1,3 @@
+/Users/avinewatia/Documents/Turing Machine Simulation/cmake-build-debug/CMakeFiles/Turing_Machine_Simulation.dir
+/Users/avinewatia/Documents/Turing Machine Simulation/cmake-build-debug/CMakeFiles/edit_cache.dir
+/Users/avinewatia/Documents/Turing Machine Simulation/cmake-build-debug/CMakeFiles/rebuild_cache.dir
